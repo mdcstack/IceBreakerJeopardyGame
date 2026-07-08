@@ -217,4 +217,4 @@ function createFloatingItem() {
 }
 
 // Spawn a new floating item every 100 milliseconds
-setInterval(createFloatingItem, 100);
+setInterval(createFloatingItem, 500);
