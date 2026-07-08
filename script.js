@@ -69,18 +69,61 @@ const flipCard = document.getElementById('flip-card');
 const cardNumberDisplay = document.getElementById('card-number-display');
 const questionText = document.getElementById('question-text');
 
+// --- State Tracking Variables ---
 let currentCategory = null;
+let currentNumberIndex = null;
 
-// Initialize App
-function init() {
-    // Render Categories
+// Create a tracker that stores which indexes have been flipped for each category
+const flippedTracker = {};
+Object.keys(gameData).forEach(category => {
+    flippedTracker[category] = new Set();
+});
+
+// --- Logic Functions ---
+function renderCategories() {
+    categoryGrid.innerHTML = '';
     Object.keys(gameData).forEach(category => {
         const btn = document.createElement('button');
         btn.className = 'btn-card';
-        btn.textContent = category;
+        
+        // Check if all questions in this category are flipped
+        const totalQuestions = gameData[category].length;
+        const flippedCount = flippedTracker[category].size;
+        
+        if (flippedCount === totalQuestions) {
+            btn.classList.add('category-completed');
+            btn.innerHTML = `${category} <br><span class="completed-icon">✓ All Brewed</span>`;
+        } else {
+            btn.textContent = category;
+        }
+        
         btn.onclick = () => selectCategory(category);
         categoryGrid.appendChild(btn);
     });
+}
+
+// NEW FUNCTION: Separates drawing the numbers from switching the views
+function renderNumbers() {
+    numberGrid.innerHTML = ''; 
+    gameData[currentCategory].forEach((_, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-card';
+        
+        if (flippedTracker[currentCategory].has(index)) {
+            btn.classList.add('number-flipped');
+            btn.textContent = `${index + 1} ✓`;
+        } else {
+            btn.textContent = index + 1;
+        }
+        
+        btn.onclick = () => selectNumber(index);
+        numberGrid.appendChild(btn);
+    });
+}
+
+// Initialize App
+function init() {
+    renderCategories();
 }
 
 function switchView(hideView, showView, showBackBtn = true) {
@@ -98,21 +141,12 @@ function switchView(hideView, showView, showBackBtn = true) {
 
 function selectCategory(category) {
     currentCategory = category;
-    numberGrid.innerHTML = ''; // Clear previous numbers
-    
-    // Generate numbers based on question count in that category
-    gameData[category].forEach((_, index) => {
-        const btn = document.createElement('button');
-        btn.className = 'btn-card';
-        btn.textContent = index + 1;
-        btn.onclick = () => selectNumber(index);
-        numberGrid.appendChild(btn);
-    });
-
-    switchView(viewCategories, viewNumbers);
+    renderNumbers(); // Draw the numbers
+    switchView(viewCategories, viewNumbers); // Switch the view
 }
 
 function selectNumber(index) {
+    currentNumberIndex = index;
     const question = gameData[currentCategory][index];
     cardNumberDisplay.textContent = index + 1;
     questionText.textContent = question;
@@ -123,19 +157,32 @@ function selectNumber(index) {
     switchView(viewNumbers, viewQuestion);
 }
 
-// Handle Back Button
+// Handle Back Button (FIXED LOGIC)
 backBtn.onclick = () => {
     if (viewQuestion.classList.contains('active')) {
-        switchView(viewQuestion, viewNumbers);
+        renderNumbers(); // Update checkmarks without forcing a bad screen transition
+        switchView(viewQuestion, viewNumbers); // Properly hide question, show numbers
+        
+        // Quietly flip the card back to the front while it's hidden so it's ready for next time
+        setTimeout(() => {
+            flipCard.classList.remove('flipped');
+        }, 300); 
+
     } else if (viewNumbers.classList.contains('active')) {
+        renderCategories();
         switchView(viewNumbers, viewCategories, false);
         currentCategory = null;
+        currentNumberIndex = null;
     }
 };
 
 // Handle Card Flip
 flipCardContainer.onclick = () => {
     flipCard.classList.toggle('flipped');
+    
+    if (flipCard.classList.contains('flipped') && currentCategory !== null && currentNumberIndex !== null) {
+        flippedTracker[currentCategory].add(currentNumberIndex);
+    }
 };
 
 // Run initialize
@@ -169,5 +216,5 @@ function createFloatingItem() {
     }, randomDuration * 1000);
 }
 
-// Spawn a new floating item every 800 milliseconds
+// Spawn a new floating item every 100 milliseconds
 setInterval(createFloatingItem, 100);

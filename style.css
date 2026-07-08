@@ -287,3 +287,31 @@ h1 {
         padding: 20px;
     }
 }
+
+/* --- Progress Indicators --- */
+.number-flipped {
+    background-color: var(--bg-color);
+    border: 1px dashed var(--accent);
+    color: var(--accent);
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+.number-flipped:hover {
+    transform: none; /* Disables the float effect to feel "used" */
+    box-shadow: none;
+}
+
+.category-completed {
+    opacity: 0.7;
+    border: 1px solid #E5E5E5;
+}
+
+.completed-icon {
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-family: 'Inter', sans-serif;
+    display: block;
+    margin-top: 8px;
+    font-weight: 400;
+}
