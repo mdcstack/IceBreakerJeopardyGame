@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Coffee & Conversations</title>
+        
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
+        
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    
+<body>
+    <div id="app">
+        <header>
+            <h1>☕ Espresso & Expressions</h1>
+            <button id="back-btn" class="hidden">← Back</button>
+        </header>
+        
+        <main>
+            <!-- View 1: Categories -->
+            <div id="view-categories" class="view active">
+                <p class="instruction">Select a blend to begin</p>
+                <div class="grid" id="category-grid"></div>
+            </div>
+
+            <!-- View 2: Numbers -->
+            <div id="view-numbers" class="view hidden">
+                <p class="instruction">Pick a number</p>
+                <div class="grid numbers-grid" id="number-grid"></div>
+            </div>
+
+            <!-- View 3: The Question Card -->
+            <div id="view-question" class="view hidden">
+                <div class="card-container" id="card-container">
+                    <div class="card" id="flip-card">
+                        <div class="card-front">
+                            <h2 id="card-number-display">?</h2>
+                            <p>Tap to reveal</p>
+                        </div>
+                        <div class="card-back">
+                            <p id="question-text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="floating-bg"></div>
+    <script src="script.js"></script>
+</body>
+</html>

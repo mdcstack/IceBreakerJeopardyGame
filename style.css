@@ -1,0 +1,289 @@
+:root {
+    /* Minimal Aesthetic Cafe Palette */
+    --bg-color: #FAF9F6;      /* Creamy off-white background */
+    --secondary-bg: #F3F2EF;  /* Soft secondary gray for cards */
+    --text-dark: #1D1D1D;     /* Espresso/Near Black for text */
+    --accent: #8A817C;        /* Warm latte-like accent tone */
+    --btn-primary: black;
+    --btn-hover: darkgray; 
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+#app {
+    width: 100%;
+    max-width: 800px;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+header {
+    position: relative;
+    margin-bottom: 50px;
+    border-bottom: 1px solid #E5E5E5;
+    padding-bottom: 20px;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--text-dark);
+    margin: 10px 0;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+#back-btn {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 1px solid var(--text-dark);
+    color: var(--text-dark);
+    padding: 8px 16px;
+    border-radius: 4px; /* Sharper edges for minimal look */
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+#back-btn:hover {
+    background: var(--text-dark);
+    color: var(--bg-color);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.view {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.instruction {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: var(--accent);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.numbers-grid {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+}
+
+.btn-card {
+    background: var(--secondary-bg);
+    border: 1px solid transparent;
+    padding: 24px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.btn-card:hover {
+    background: var(--bg-color);
+    border: 1px solid var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* 3D Flip Card Styles */
+.card-container {
+    perspective: 1000px;
+    width: 100%;
+    max-width: 450px;
+    height: 320px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    padding: 30px;
+    box-sizing: border-box;
+    border: 1px solid #E5E5E5;
+}
+
+.card-front {
+    background: var(--secondary-bg);
+    color: var(--text-dark);
+}
+
+.card-front h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    margin: 0;
+    color: var(--accent);
+}
+
+.card-front p {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-dark);
+    opacity: 0.6;
+}
+
+.card-back {
+    background: var(--bg-color);
+    color: var(--text-dark);
+    transform: rotateY(180deg);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    line-height: 1.4;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Floating Background Elements */
+#floating-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* Ensures you can still click buttons through the emojis */
+    overflow: hidden;
+    z-index: -1; /* Keeps them behind the main content */
+}
+
+.floating-item {
+    position: absolute;
+    bottom: -50px;
+    user-select: none;
+    animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.5; /* Soft opacity so it's not too distracting */
+    }
+    90% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 600px) {
+    #app {
+        padding: 20px 15px;
+    }
+
+    header {
+        /* Changes the header to a vertical stack on mobile */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        margin: 0;
+        text-align: center;
+    }
+
+    #back-btn {
+        /* Removes the absolute positioning so it doesn't overlap the title */
+        position: relative;
+        top: 0;
+        transform: none;
+        padding: 8px 24px;
+        width: auto;
+    }
+
+    .instruction {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .grid {
+        /* Stacks the category buttons in a single column */
+        grid-template-columns: 1fr; 
+        gap: 12px;
+    }
+
+    .numbers-grid {
+        /* Keeps numbers in a grid, but makes them smaller */
+        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+        gap: 10px;
+    }
+
+    .btn-card {
+        padding: 16px;
+        font-size: 0.95rem;
+    }
+
+    .card-container {
+        /* Makes the card slightly taller to ensure longer questions fit */
+        height: 380px; 
+    }
+
+    .card-front h2 {
+        font-size: 3.5rem;
+    }
+
+    .card-back {
+        font-size: 1.2rem;
+        padding: 20px;
+    }
+}
